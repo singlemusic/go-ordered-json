@@ -173,6 +173,15 @@ func (om *OrderedMap) UnmarshalJSON(data []byte) error {
 }
 
 func (om *OrderedMap) parseobject(dec *json.Decoder) (err error) {
+	if nil == om.l {
+		om.l = list.New()
+	}
+	if nil == om.keys {
+		om.keys = make(map[string]*list.Element)
+	}
+	if nil == om.m {
+		om.m = make(map[string]interface{})
+	}
 	var t json.Token
 	for dec.More() {
 		t, err = dec.Token()
