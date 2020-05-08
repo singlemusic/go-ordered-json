@@ -188,7 +188,7 @@ func TestUnmarshalOrderedMap(t *testing.T) {
 	// check by Has and GetValue
 	for _, kv := range pairs {
 		if !om.Has(kv.Key) {
-			t.Fatalf("expect key %q exists in Unmarshaled OrderedMap")
+			t.Fatalf("expect key %q exists in Unmarshaled OrderedMap", kv.Key)
 		}
 		value, ok := om.GetValue(kv.Key)
 		if !ok || value != kv.Value {
@@ -287,6 +287,15 @@ func TestUnmarshalNestedOrderedMap(t *testing.T) {
 
 	if !reflect.DeepEqual(om, obj) {
 		t.Fatalf("Unmarshal OrderedMap not deeply equal: %#v expected %#v", om, obj)
+	}
+}
+
+func TestUnmarshalOrderedMapSlice(t *testing.T) {
+	data := []byte(`[{"a": true, "b": [3, 4, { "b": "3", "d": [] }]}]`)
+	slice := make([]OrderedMap, 0)
+	err := json.Unmarshal(data, &slice)
+	if err != nil {
+		t.Fatalf("Unmarshal OrderedMap: %v", err)
 	}
 }
 
